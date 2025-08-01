@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer Banking & Insurance AI Data Flow</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .diagram-container {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+        
+        .flow-diagram {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .stage {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid;
+        }
+        
+        .stage:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .stage-1 { border-left-color: #e74c3c; }
+        .stage-2 { border-left-color: #f39c12; }
+        .stage-3 { border-left-color: #3498db; }
+        .stage-4 { border-left-color: #27ae60; }
+        
+        .stage-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .data-source {
+            background: #ecf0f1;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 6px;
+            font-size: 0.9em;
+            border-left: 3px solid #95a5a6;
+        }
+        
+        .data-source.internal { border-left-color: #3498db; }
+        .data-source.external { border-left-color: #e67e22; }
+        .data-source.alternative { border-left-color: #9b59b6; }
+        .data-source.ai-output { border-left-color: #27ae60; }
+        
+        .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: #7f8c8d;
+            margin: 20px 0;
+        }
+        
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .application-category {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .banking {
+            border-left: 5px solid #3498db;
+        }
+        
+        .insurance {
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .category-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .use-case {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 3px solid #bdc3c7;
+            font-size: 0.95em;
+        }
+        
+        .use-case.customer-exp { border-left-color: #3498db; }
+        .use-case.risk-mgmt { border-left-color: #e74c3c; }
+        .use-case.operations { border-left-color: #27ae60; }
+        .use-case.underwriting { border-left-color: #f39c12; }
+        .use-case.claims { border-left-color: #9b59b6; }
+        .use-case.innovation { border-left-color: #e67e22; }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        
+        .governance-notes {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .governance-notes h3 {
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        
+        .governance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .governance-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        @media (max-width: 1200px) {
+            .flow-diagram {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .flow-diagram {
+                grid-template-columns: 1fr;
+            }
+            
+            .applications-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .legend {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Consumer Banking & Insurance AI Data Flow</h1>
+            <p>West African Emerging Markets Implementation Framework</p>
+        </div>
+        
+        <div class="diagram-container">
+            <div class="flow-diagram">
+                <div class="stage stage-1">
+                    <div class="stage-title">Data Collection</div>
+                    <div class="data-source internal">Customer Transactions</div>
+                    <div class="data-source internal">Account & Policy Records</div>
+                    <div class="data-source internal">KYC Documentation</div>
+                    <div class="data-source internal">Claims History</div>
+                    <div class="data-source internal">Mobile App Usage</div>
+                    <div class="data-source external">Credit Bureau Data</div>
+                    <div class="data-source external">Mobile Money Records</div>
+                    <div class="data-source external">Satellite Imagery</div>
+                    <div class="data-source alternative">Utility Payments</div>
+                    <div class="data-source alternative">Airtime Purchases</div>
+                    <div class="data-source alternative">Social Network Data</div>
+                </div>
+                
+                <div class="stage stage-2">
+                    <div class="stage-title">Data Processing & Governance</div>
+                    <div class="data-source">Privacy Compliance</div>
+                    <div class="data-source">Consent Management</div>
+                    <div class="data-source">Data Quality Validation</div>
+                    <div class="data-source">Cross-border Compliance</div>
+                    <div class="data-source">Real-time ETL Pipelines</div>
+                    <div class="data-source">Data Anonymization</div>
+                    <div class="data-source">Fraud Detection</div>
+                    <div class="data-source">Multi-language Processing</div>
+                </div>
+                
+                <div class="stage stage-3">
+                    <div class="stage-title">AI Model Development</div>
+                    <div class="data-source">Credit Scoring Models</div>
+                    <div class="data-source">Fraud Detection ML</div>
+                    <div class="data-source">Customer Segmentation</div>
+                    <div class="data-source">Risk Assessment Models</div>
+                    <div class="data-source">NLP for Customer Service</div>
+                    <div class="data-source">Computer Vision for Claims</div>
+                    <div class="data-source">Recommendation Engines</div>
+                    <div class="data-source">Predictive Analytics</div>
+                </div>
+                
+                <div class="stage stage-4">
+                    <div class="stage-title">AI Applications</div>
+                    <div class="data-source ai-output">Personalized Banking</div>
+                    <div class="data-source ai-output">Automated Underwriting</div>
+                    <div class="data-source ai-output">Claims Processing</div>
+                    <div class="data-source ai-output">Fraud Prevention</div>
+                    <div class="data-source ai-output">Customer Support Bots</div>
+                    <div class="data-source ai-output">Micro-insurance Products</div>
+                    <div class="data-source ai-output">Risk-based Pricing</div>
+                    <div class="data-source ai-output">Financial Inclusion Tools</div>
+                </div>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #3498db;"></div>
+                    <span>Internal Data Sources</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #e67e22;"></div>
+                    <span>External Data Sources</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #9b59b6;"></div>
+                    <span>Alternative Data Sources</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #27ae60;"></div>
+                    <span>AI-Powered Outputs</span>
+                </div>
+            </div>
+            
+            <div class="applications-grid">
+                <div class="application-category banking">
+                    <div class="category-title">Banking AI Applications</div>
+                    <div class="use-case customer-exp">Personalized Product Recommendations</div>
+                    <div class="use-case customer-exp">Intelligent Chatbots (Multi-language)</div>
+                    <div class="use-case customer-exp">Automated KYC & Onboarding</div>
+                    <div class="use-case risk-mgmt">Alternative Credit Scoring</div>
+                    <div class="use-case risk-mgmt">Real-time Fraud Detection</div>
+                    <div class="use-case risk-mgmt">Loan Default Prediction</div>
+                    <div class="use-case operations">Document Processing & Verification</div>
+                    <div class="use-case operations">Regulatory Compliance Monitoring</div>
+                    <div class="use-case operations">Transaction Categorization</div>
+                </div>
+                
+                <div class="application-category insurance">
+                    <div class="category-title">Insurance AI Applications</div>
+                    <div class="use-case underwriting">Automated Life Insurance Underwriting</div>
+                    <div class="use-case underwriting">Property Risk Assessment</div>
+                    <div class="use-case underwriting">Agricultural Risk Modeling</div>
+                    <div class="use-case claims">Automated Claims Processing</div>
+                    <div class="use-case claims">Fraud Investigation</div>
+                    <div class="use-case claims">Document Verification</div>
+                    <div class="use-case innovation">Micro-insurance Products</div>
+                    <div class="use-case innovation">Usage-based Insurance</div>
+                    <div class="use-case innovation">Parametric Weather Insurance</div>
+                </div>
+            </div>
+            
+            <div class="governance-notes">
+                <h3>Data Governance & Compliance Framework</h3>
+                <div class="governance-grid">
+                    <div class="governance-item">
+                        <strong>Privacy Protection</strong><br>
+                        GDPR compliance, local privacy laws, consent management, data minimization principles
+                    </div>
+                    <div class="governance-item">
+                        <strong>Regulatory Compliance</strong><br>
+                        West African banking supervisors, insurance authorities (CIMA), cross-border regulations
+                    </div>
+                    <div class="governance-item">
+                        <strong>Data Quality</strong><br>
+                        Real-time validation, fraud detection in sources, missing data handling, bias monitoring
+                    </div>
+                    <div class="governance-item">
+                        <strong>Security Framework</strong><br>
+                        End-to-end encryption, access controls, audit trails, incident response procedures
+                    </div>
+                    <div class="governance-item">
+                        <strong>Alternative Data Ethics</strong><br>
+                        Fair lending practices, bias testing, transparent algorithms, consumer protection
+                    </div>
+                    <div class="governance-item">
+                        <strong>Cross-border Considerations</strong><br>
+                        ECOWAS/WAEMU compliance, multi-currency handling, local language support
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
